@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SPA</title>
+	
+	<style>
+		body{
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			background-color: #777;
+		}
+
+		#spa{
+			position: absolute;
+			top: 8px;
+			left: 8px;
+			bottom: 8px;
+			right: 8px;
+			border-radius: 8px 8px 0 8px;
+			background-color: #fff;
+		}
+		.spa-slider{
+			position: absolute;
+			bottom: 0;
+			right: 2px;
+			width: 300px;
+			height: 16px;
+			cursor: pointer;
+			border-radius: 8px 0 0;
+			background-color: #f00;
+		}
+	</style>
+
+	<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+	<script>
+		//将代码封装在spa命名空间内
+		var spa = (function($) {
+		//使用前，先声明所有变量
+			var configMap = {
+				extended_height: 434,
+				extended_title: 'Click to retract',
+				retracted_height: 16,
+				retracted_title: 'Click to extend',
+				template_html: '<div class="spa-slider"></div>'
+			}, 
+			//声明所有其他的模块变量
+			$chatSlider,
+			toggleSlider, 
+			onClickSlider, 
+			initModule;
+
+			//DOM method 
+			//change slider height
+			
+			toggleSlider = function() {
+				//jQuery的height()取高度时有坑，需要Math.ceil()
+				var slide_height = Math.ceil($chatSlider.height());
+				console.log($chatSlider.height());
+				console.log(slide_height);
+				if(slide_height === configMap.retracted_height) {
+					$chatSlider.animate({height: configMap.extended_height}).
+					attr({title: configMap.extended_title});
+					return true;
+				}else if (slide_height === configMap.extended_height) {
+					$chatSlider.animate({height: configMap.retracted_height}).attr({title: configMap.retracted_title});
+					return true;
+				}
+				//如果在运动时则不做任何动画
+				return false;
+			};
+
+
+
+			//把所有的事件处理程序聚集在一个区块中。它们应该调用其他方法来更新或者修改业务逻辑
+			onClickSlider = function(event) {
+				toggleSlider();
+				return false;
+			};
+
+			
+			//把所有的公开方法聚集在一个区块中
+			initModule = function($container) {
+				//渲染HTML
+				$container.html(configMap.template_html);
+				$chatSlider = $container.find('.spa-slider');
+				
+				$chatSlider.attr({'title': configMap.retracted_title}).click(onClickSlider);
+				return true;
+
+			};
+
+			return {initModule : initModule};//通过返回spa名字空间中的对象导出公开方法，我们只导出了一个方法 intiModule
+		}($));
+
+
+		$(document).ready(function() {spa.initModule($("#spa"));});	
+
+	</script>
+</head>
+<body>
+	<div id="spa">
+		
+	</div>
+</body>
+</html>
