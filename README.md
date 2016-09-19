@@ -1,4 +1,4 @@
 # spa
-from 《single page application》
+from 《single page Web application》
 
  
