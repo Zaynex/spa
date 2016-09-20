@@ -72,10 +72,33 @@ spa.shell = (function(){
 	};	
 
 	onclickChat = function(event) {
+		if(toggleChat(stateMap.is_chat_retracted)) {
+			$.uriAnchor.setAnchor({
+				chat: (stateMap.is_chat_retracted? "open" : "closed")
+			});
+			return false;
+		};
+		/*
 		toggleChat(stateMap.is_chat_retracted);
 		return false;
+		*/
 	}
 	//聊天模块滑动结束
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	initModule = function($container) {
 		stateMap.$container = $container;
@@ -86,6 +109,11 @@ spa.shell = (function(){
 		//setTimeout(function(){toggleChat(true);}, 3000);
 		//setTimeout(function(){toggleChat(false);}, 8000);
 	};
+
+
+
+
+
 
 	return {initModule: initModule};
 }());
